@@ -41,7 +41,7 @@ function html_to_elements(html) {
  * @param {Object} root 
  */
 function on_load_feeds(root) {
-	let div = document.getElementsByClassName("entry-content")[0];
+	let div = document.getElementById("entry_list_by_label");
 	if (!div) return;
 
 	if("entry" in root.feed){
