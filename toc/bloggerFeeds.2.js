@@ -17,10 +17,10 @@ let _site_url = "";
  * @param {string} site_url ページとfeedのサーバーが異なるときにfeed側のサーバーを指定する。
  */
 function load_entry_list(label_name, site_url="") {
-	let scpt = document.createElement("script");
-	scpt.src = `${site_url}/feeds/posts/summary/-/${label_name}?redirect=false&max-results=${MAX_FEED_NUM}&alt=json&callback=on_load_feeds&start-index=${_start_index}`;
-	_label_name = label_name;
+	_label_name = avoid_blogger_bug(label_name);
 	_site_url = site_url;
+	let scpt = document.createElement("script");
+	scpt.src = `${_site_url}/feeds/posts/summary/-/${_label_name}?redirect=false&max-results=${MAX_FEED_NUM}&alt=json&callback=on_load_feeds&start-index=${_start_index}`;
 	document.body.appendChild(scpt);
 }
 
@@ -33,6 +33,51 @@ function html_to_elements(html) {
     var template = document.createElement('template');
     template.innerHTML = html;
     return template.content.childNodes;
+}
+
+/**
+ * bloggerが全角の記号をjavascript内でも勝手にescapeしてしまうバグを回避
+ * @param {string} str 
+ */
+function avoid_blogger_bug(str) {
+	return str.replace("&#65281;", "！")
+	.replace("&#65289;", "）")
+	.replace("&#65288;", "（")
+	.replace("&#8217;", "’")
+	.replace("&#65286;", "＆")
+	.replace("&#65285;", "％")
+	.replace("&#65284;", "＄")
+	.replace("&#65283;", "＃")
+	.replace("&#8221;", "”")
+	.replace("&#65371;", "｛")
+	.replace("&#65339;", "［")
+	.replace("&#65344;", "｀")
+	.replace("&#65312;", "＠")
+	.replace("&#65372;", "｜")
+	.replace("&#65509;", "￥")
+	.replace("&#65374;", "～")
+	.replace("&#65342;", "＾")
+	.replace("&#65309;", "＝")
+	.replace("&#65293;", "－")
+	.replace("&#65311;", "？")
+	.replace("&#65295;", "／")
+	.replace("&#65310;", "＞")
+	.replace("&#65294;", "．")
+	.replace("&#65308;", "＜")
+	.replace("&#65292;", "，")
+	.replace("&#65373;", "｝")
+	.replace("&#65341;", "］")
+	.replace("&#65290;", "＊")
+	.replace("&#65306;", "：")
+	.replace("&#65291;", "＋")
+	.replace("&#65307;", "；")
+	.replace("&#12443;", "゛")
+	.replace("&#12301;", "」")
+	.replace("&#12300;", "「")
+	.replace("&#12289;", "、")
+	.replace("&#12290;", "。")
+	.replace("&#12539;", "・")
+	.replace("&#65343;", "＿")
 }
 
 /**
